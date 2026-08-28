@@ -270,7 +270,7 @@ h2 {
 
 h1 {
   max-width: 12ch;
-  font-size: clamp(3rem, 7.6vw, 8rem);
+  font-size: clamp(2.4rem, 6vw, 6rem);
 }
 
 .hero-copy {
@@ -402,7 +402,7 @@ h1 {
 .schedule-heading h2 {
   margin-top: 0.7rem;
   color: var(--ink);
-  font-size: clamp(2.2rem, 5.2vw, 5rem);
+  font-size: clamp(1.8rem, 4vw, 3.6rem);
 }
 
 .intro-grid > p {
@@ -624,7 +624,7 @@ h1 {
 .event-panel h2 {
   margin: 0.65rem 0 1rem;
   color: #112442;
-  font-size: clamp(2.2rem, 5vw, 4.6rem);
+  font-size: clamp(1.8rem, 3.8vw, 3.4rem);
 }
 
 .event-panel p:last-child {
@@ -749,7 +749,7 @@ h1 {
 .timeline-item h3 {
   margin: 0 0 0.25rem;
   color: #122846;
-  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
 }
 
 .timeline-item p {
@@ -807,7 +807,7 @@ h1 {
   max-width: 11ch;
   margin-top: 0.8rem;
   color: var(--ink);
-  font-size: clamp(3rem, 7vw, 6.8rem);
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
 }
 
 .funding-total-panel {
@@ -853,7 +853,7 @@ h1 {
 .modal-heading h2 {
   margin-top: 0.55rem;
   color: var(--ink);
-  font-size: clamp(2rem, 4vw, 3.8rem);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
 }
 
 .leaderboard-heading > span {
@@ -1059,7 +1059,7 @@ h1 {
 .auth-card h1 {
   margin-top: 0.5rem;
   color: var(--ink);
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.7rem, 3.2vw, 2.2rem);
 }
 
 .auth-subtext {
@@ -1196,7 +1196,7 @@ h1 {
   }
 
   h1 {
-    font-size: clamp(2.6rem, 15vw, 4rem);
+    font-size: clamp(2.1rem, 11vw, 3rem);
   }
 
   .hero-copy {
@@ -1221,7 +1221,7 @@ h1 {
   }
 
   .event-panel h2 {
-    font-size: clamp(2rem, 11vw, 3.2rem);
+    font-size: clamp(1.7rem, 8vw, 2.4rem);
   }
 
   .timeline::before {

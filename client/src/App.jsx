@@ -474,6 +474,30 @@ function CrowdfundingPage() {
     }
   }
 
+  async function deleteContributor(id) {
+    if (!window.confirm("Are you sure you want to delete this contributor?")) return;
+    
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/contributors/${id}`, {
+        method: "DELETE",
+        headers: {
+          ...(admin?.token ? { Authorization: `Bearer ${admin.token}` } : {})
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) logout();
+        throw new Error("Could not delete contributor");
+      }
+      
+      await loadContributors();
+    } catch (deleteError) {
+      setError(deleteError.message);
+      setLoading(false);
+    }
+  }
+
   return (
     <>
       <Header funding />
@@ -517,12 +541,13 @@ function CrowdfundingPage() {
                     <th>Room</th>
                     <th>Facilitator</th>
                     <th>Amount</th>
+                    {isAdmin && <th>Delete</th>}
                   </tr>
                 </thead>
                 <tbody>
                   {topTen.length === 0 && (
                     <tr>
-                      <td colSpan="6" className="empty-table">No contributors yet.</td>
+                      <td colSpan={isAdmin ? "7" : "6"} className="empty-table">No contributors yet.</td>
                     </tr>
                   )}
                   {topTen.map((contributor, index) =>
@@ -531,6 +556,18 @@ function CrowdfundingPage() {
                         <td>{index + 1}</td>
                         <td colSpan="4">Anonymous contributor</td>
                         <td className="amount-cell">{formatCurrency(contributor.amountContributed)}</td>
+                        {isAdmin && (
+                          <td className="action-cell">
+                            <button 
+                              type="button" 
+                              onClick={() => deleteContributor(contributor.id)}
+                              style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}
+                              title="Delete Contributor"
+                            >
+                              &#x274C;
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     ) : (
                       <tr key={contributor.id}>
@@ -540,6 +577,18 @@ function CrowdfundingPage() {
                         <td>{contributor.roomNumber}</td>
                         <td>{contributor.facilitatorName}</td>
                         <td className="amount-cell">{formatCurrency(contributor.amountContributed)}</td>
+                        {isAdmin && (
+                          <td className="action-cell">
+                            <button 
+                              type="button" 
+                              onClick={() => deleteContributor(contributor.id)}
+                              style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: '1.1rem' }}
+                              title="Delete Contributor"
+                            >
+                              &#x274C;
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     )
                   )}

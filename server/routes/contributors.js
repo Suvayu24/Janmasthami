@@ -74,4 +74,19 @@ router.post("/", requireAuth, async (req, res) => {
   }
 });
 
+// Admin-only: delete a contributor by ID
+router.delete("/:id", requireAuth, async (req, res) => {
+  try {
+    const deletedContributor = await Contributor.findByIdAndDelete(req.params.id);
+    
+    if (!deletedContributor) {
+      return res.status(404).json({ message: "Contributor not found" });
+    }
+    
+    res.json({ message: "Contributor deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Could not delete contributor" });
+  }
+});
+
 export default router;
