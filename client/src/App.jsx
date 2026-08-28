@@ -67,13 +67,14 @@ const wheelSegmentCount = events.length;
 const wheelSpokeAngle = 360 / wheelSegmentCount;
 
 const schedule = [
-  ["5:00 PM", "Commencement and Welcome", "Opening lamp-lighting, welcome note, and invocation."],
-  ["5:15 PM", "Abhishek", "A devotional ceremony to begin the celebration with reverence."],
-  ["5:45 PM", "Dance", "Classical and festive choreography inspired by Krishna leela."],
-  ["6:10 PM", "Drama", "Stage storytelling with mythological scenes and character-led moments."],
-  ["6:40 PM", "Music", "Devotional vocals, instruments, and audience-led chorus sections."],
-  ["7:05 PM", "Bhajan Clubbing", "The main attraction: bhajans, beats, lights, and a full-audience finale."],
-  ["7:45 PM", "Prasadam", "Prasadam distribution and closing gathering."]
+  ["5:00 PM", "Welcome & Music", "Welcome of Guests and Students with Musical Performance by Students."],
+  ["5:20 PM", "Lamp Offering", "Lamp Offering and Director's Address."],
+  ["5:30 PM", "Keynote", "Keynote Speaker Address."],
+  ["6:00 PM", "Drama", "Drama Performance by Students."],
+  ["6:25 PM", "Dance", "Dance Performances by Students."],
+  ["6:40 PM", "Awards", "Certificate & Award Distribution."],
+  ["6:45 PM", "Bhajan Clubbing", "Bhajan Clubbing by Narottam Das & Team, followed by Abhishek of the Deities."],
+  ["8:00 PM", "Prasadam", "Prasadam Distribution for All."]
 ];
 
 const initialForm = {
