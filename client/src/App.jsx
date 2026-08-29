@@ -212,12 +212,6 @@ const departments = [
     title: "Drama",
     description: "Write, direct, and perform the devotional drama that brings Krishna's stories to life on stage.",
     coordinators: [{ name: "Avinash Jha", phone: "9521277960" }]
-  },
-  {
-    key: "website",
-    title: "Website & Tech Queries",
-    description: "The point of contact for anything related to the festival website or the crowdfunding page.",
-    coordinators: [{ name: "Suvayu", phone: "6289345867" }]
   }
 ];
 
