@@ -92,12 +92,13 @@ function useCountdown(targetTime) {
     return () => window.clearInterval(timer);
   }, [targetTime]);
 
-  const totalMinutes = Math.floor(timeLeft / 60000);
+  const totalSeconds = Math.floor(timeLeft / 1000);
 
   return {
-    days: Math.floor(totalMinutes / (60 * 24)),
-    hours: Math.floor((totalMinutes % (60 * 24)) / 60),
-    minutes: totalMinutes % 60,
+    days: Math.floor(totalSeconds / (60 * 60 * 24)),
+    hours: Math.floor((totalSeconds % (60 * 60 * 24)) / 3600),
+    minutes: Math.floor((totalSeconds % 3600) / 60),
+    seconds: totalSeconds % 60,
     isOver: timeLeft <= 0
   };
 }
@@ -237,13 +238,13 @@ const departments = [
     title: "Drama",
     description: "Write, direct, and perform the devotional drama that brings Krishna's stories to life on stage.",
     coordinators: [{ name: "Avinash Jha", phone: "9521277960" }]
-  },
-  {
-    key: "website",
-    title: "Website & Tech Queries",
-    description: "The point of contact for anything related to the festival website or the crowdfunding page.",
-    coordinators: [{ name: "Suvayu", phone: "6289345867" }]
   }
+  // {
+  //   key: "website",
+  //   title: "Website & Tech Queries",
+  //   description: "The point of contact for anything related to the festival website or the crowdfunding page.",
+  //   coordinators: [{ name: "Suvayu", phone: "6289345867" }]
+  // }
 ];
 
 // const eventPosters = [
@@ -304,8 +305,112 @@ function Header({ funding = false }) {
   );
 }
 
+// A marigold-and-jasmine garland strand. Flowers are placed along a simple
+// sine-wave "vine" (the same trigonometric trick the events wheel below uses
+// for its spoke positions) rather than a hand-plotted path, so the strand
+// stays smooth at any length. Positioned via CSS on the left/right edges of
+// the countdown card and mirrored with `transform: scaleX(-1)`.
+function MarigoldGarland({ className = "" }) {
+  const flowerCount = 8;
+  const stops = Array.from({ length: flowerCount }, (_, index) => {
+    const t = index / (flowerCount - 1);
+    return {
+      x: 54 + Math.sin(t * Math.PI * 2.4) * 34,
+      y: 6 + t * 248,
+      isJasmine: index % 3 === 1
+    };
+  });
+  const vinePath = stops.reduce(
+    (path, point, index) => `${path}${index === 0 ? "M" : "L"}${point.x.toFixed(1)} ${point.y.toFixed(1)} `,
+    ""
+  );
+
+  return (
+    <svg className={`countdown-garland ${className}`} viewBox="0 0 108 260" aria-hidden="true">
+      <path d={vinePath} fill="none" stroke="#5b7a3a" strokeWidth="2.2" opacity="0.5" />
+      {stops.map((point, index) => (
+        <g key={index} transform={`translate(${point.x} ${point.y})`}>
+          <path
+            d="M0 0c-11-2-17-11-13-19 7 1 13 8 13 19Z"
+            fill="#5b7a3a"
+            transform={`rotate(${index % 2 === 0 ? -50 : 130})`}
+          />
+          {point.isJasmine ? (
+            <g>
+              {[0, 72, 144, 216, 288].map((rotation) => (
+                <ellipse key={rotation} cx="0" cy="-5.5" rx="3.1" ry="5.5" fill="#fffdf6" transform={`rotate(${rotation})`} />
+              ))}
+              <circle r="2.4" fill="#f0c94d" />
+            </g>
+          ) : (
+            <g>
+              <circle r="9" fill="#e8890c" />
+              <circle r="6.6" fill="#f7c948" />
+              {Array.from({ length: 10 }, (_, petal) => (
+                <ellipse
+                  key={petal}
+                  cx="0"
+                  cy="-8.6"
+                  rx="2.3"
+                  ry="4.6"
+                  fill="#f2a413"
+                  opacity="0.92"
+                  transform={`rotate(${petal * 36})`}
+                />
+              ))}
+              <circle r="2.6" fill="#c96a05" />
+            </g>
+          )}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+// A single clay matka (pot) brimming with makhan -- reused three times, at
+// different scales, to form the pot cluster at the foot of the countdown
+// card.
+function ClayPot() {
+  return (
+    <g>
+      <path
+        d="M-10 4c-2-6 4-10 10-10s12 4 10 10l2 5c17 5 22 33 8 50-9 11-31 11-40 0-14-17-9-45 8-50Z"
+        fill="#bb6a3c"
+        stroke="#8f4a26"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path d="M-24 46c15 8 33 8 48 0" fill="none" stroke="#8f4a26" strokeWidth="1" opacity="0.45" />
+      <path d="M-21 60c13 7 29 7 42 0" fill="none" stroke="#8f4a26" strokeWidth="1" opacity="0.45" />
+      <path
+        d="M-12 3c-3-9 5-14 12-14s15 5 12 14c6-1 9 5 4 8-3 6-29 6-32 0-5-3-2-9 4-8Z"
+        fill="#fffaf1"
+        stroke="#efe6cf"
+        strokeWidth="0.8"
+      />
+      <path d="M4 -8c5 4 5 9 1 13" fill="none" stroke="#efe6cf" strokeWidth="1.2" opacity="0.7" />
+    </g>
+  );
+}
+
+function MakhanPots({ className = "" }) {
+  return (
+    <svg className={`countdown-pots ${className}`} viewBox="0 0 220 108" aria-hidden="true">
+      <g transform="translate(34 34) scale(0.74)">
+        <ClayPot />
+      </g>
+      <g transform="translate(186 30) scale(-0.74 0.74)">
+        <ClayPot />
+      </g>
+      <g transform="translate(110 0)">
+        <ClayPot />
+      </g>
+    </svg>
+  );
+}
+
 function EventCountdown() {
-  const { days, hours, minutes, isOver } = useCountdown(eventCountdownTarget);
+  const { days, hours, minutes, seconds, isOver } = useCountdown(eventCountdownTarget);
 
   if (isOver) {
     return (
@@ -316,7 +421,12 @@ function EventCountdown() {
   }
 
   return (
-    <div className="countdown-strip" aria-label="Countdown to Janmashtami Utsav">
+    <div className="countdown-strip is-decorated" aria-label="Countdown to Janmashtami Utsav">
+      <MarigoldGarland className="countdown-garland--left" />
+      <MarigoldGarland className="countdown-garland--right" />
+      <FluteMotif className="countdown-flute" />
+      <PeacockFeatherMotif className="countdown-feather" />
+
       <p className="countdown-label">Janmashtami Utsav begins in</p>
       <div className="countdown-figures">
         <div className="countdown-unit">
@@ -333,7 +443,14 @@ function EventCountdown() {
           <strong>{String(minutes).padStart(2, "0")}</strong>
           <span>Minutes</span>
         </div>
+        <span className="countdown-divider">:</span>
+        <div className="countdown-unit">
+          <strong>{String(seconds).padStart(2, "0")}</strong>
+          <span>Seconds</span>
+        </div>
       </div>
+
+      <MakhanPots />
     </div>
   );
 }

@@ -413,6 +413,7 @@ h1 {
 }
 
 .countdown-strip {
+  position: relative;
   margin-top: clamp(2.2rem, 6vw, 3.6rem);
   padding: clamp(1.3rem, 3vw, 2rem);
   display: grid;
@@ -425,9 +426,19 @@ h1 {
     linear-gradient(135deg, rgba(255, 255, 255, 0.75), rgba(255, 250, 240, 0.92)),
     #fffaf0;
   box-shadow: var(--shadow);
+  isolation: isolate;
+}
+
+/* Extra breathing room so the garlands, flute/feather, and pots have space
+   to hang past the card's own edges without crowding the label/figures. */
+.countdown-strip.is-decorated {
+  padding-top: clamp(2rem, 4.5vw, 2.8rem);
+  padding-bottom: clamp(2.6rem, 6vw, 3.6rem);
 }
 
 .countdown-label {
+  position: relative;
+  z-index: 2;
   margin: 0;
   color: var(--saffron);
   font-weight: 800;
@@ -437,15 +448,75 @@ h1 {
 }
 
 .countdown-figures {
+  position: relative;
+  z-index: 2;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: clamp(0.8rem, 2.5vw, 1.8rem);
+  justify-content: center;
+  gap: clamp(0.6rem, 2.5vw, 1.8rem);
 }
 
 .countdown-unit {
   display: grid;
   gap: 0.3rem;
-  min-width: 4rem;
+  min-width: 3.6rem;
+}
+
+/* Marigold-and-jasmine garlands draped over the card's top corners. */
+.countdown-garland {
+  position: absolute;
+  top: -1.3rem;
+  width: clamp(72px, 11vw, 132px);
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 16px rgba(51, 34, 13, 0.2));
+}
+
+.countdown-garland--left {
+  left: clamp(-1.6rem, -3vw, -0.6rem);
+}
+
+.countdown-garland--right {
+  right: clamp(-1.6rem, -3vw, -0.6rem);
+  transform: scaleX(-1);
+}
+
+/* A flute-and-peacock-feather flourish tucked behind the top-right corner,
+   echoing the same accents used elsewhere on the site (see .motif). */
+.countdown-flute {
+  top: clamp(-1.5rem, -3vw, -0.7rem);
+  right: clamp(0.4rem, 3vw, 2.4rem);
+  width: clamp(90px, 11vw, 150px);
+  height: auto;
+  aspect-ratio: 260 / 46;
+  color: var(--saffron);
+  transform: rotate(-32deg);
+  z-index: 1;
+}
+
+.countdown-feather {
+  top: clamp(-3.2rem, -6vw, -1.9rem);
+  right: clamp(-0.6rem, -1.5vw, 0.2rem);
+  width: clamp(30px, 4.4vw, 48px);
+  height: clamp(78px, 11vw, 122px);
+  color: var(--teal);
+  transform: rotate(18deg);
+  z-index: 1;
+}
+
+/* Three makhan-brimming clay pots straddling the card's bottom edge. */
+.countdown-pots {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(-2rem, -4.5vw, -1.1rem);
+  transform: translateX(-50%);
+  width: clamp(150px, 20vw, 220px);
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 18px rgba(51, 34, 13, 0.24));
 }
 
 .countdown-unit strong {
@@ -501,7 +572,13 @@ h1 {
 
 .wheel-ring {
   --wheel-size: clamp(600px, 64vw, 900px);
-  --wheel-item-size: clamp(104px, 9vw, 156px);
+  /* Larger than before (was clamp(104px, 9vw, 156px)) for more visible
+     pastime photos. --wheel-size is untouched, and because each item's
+     outer edge sits at a constant (--wheel-size / 2 - 6px) from the ring's
+     centre regardless of item size, growing the circles doesn't grow the
+     wheel's overall footprint -- so it never encroaches on the event cards
+     beside it. */
+  --wheel-item-size: clamp(130px, 11.5vw, 210px);
   --wheel-radius: calc((var(--wheel-size) - var(--wheel-item-size)) / 2 - 6px);
   position: absolute;
   top: 50%;
@@ -1502,8 +1579,11 @@ h1 {
   }
 
   .wheel-ring {
-    --wheel-size: min(85vw, 320px); 
-    --wheel-item-size: clamp(50px, 15vw, 72px);
+    --wheel-size: min(85vw, 320px);
+    /* Larger than before (was clamp(50px, 15vw, 72px)); same "constant
+       outer edge" reasoning as the desktop rule above keeps this from
+       pushing into the event cards on the right. */
+    --wheel-item-size: clamp(62px, 18vw, 92px);
     left: -20%; /* Use a negative value like -15% or -20% to pull it further left */
   }
 
@@ -1524,6 +1604,16 @@ h1 {
 @media (max-width: 620px) {
   .brand span:last-child {
     display: none;
+  }
+
+  /* Four countdown units (was three) need a little less breathing room to
+     avoid crowding on narrow phones. */
+  .countdown-unit {
+    min-width: 3.1rem;
+  }
+
+  .countdown-figures {
+    gap: 0.5rem 0.9rem;
   }
 
   .nav-links {
