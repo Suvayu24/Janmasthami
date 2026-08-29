@@ -143,6 +143,8 @@ router.post("/payment-approved", async (req, res) => {
   });
 
   if (!emailResult.ok) {
+    console.error("Receipt email failed:", emailResult.detail);
+
     return res.status(200).json({
       status: "partial",
       message: `contributor saved, email failed: ${emailResult.detail}`,
