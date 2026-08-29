@@ -565,7 +565,7 @@ function CrowdfundingPage() {
           </div>
 
           {error && <p className="status-message error-message">{error}</p>}
-          {loading && <p className="status-message">Loading contributors...</p>}
+          {loading && <p className="status-message">Loading donors...</p>}
 
           {!loading && (
             <div className="leaderboard-table-wrap">
@@ -665,7 +665,7 @@ function CrowdfundingPage() {
           <section className="contributor-modal" role="dialog" aria-modal="true" aria-labelledby="contributor-title" onMouseDown={(event) => event.stopPropagation()}>
             <div className="modal-heading">
               <div>
-                <p className="section-kicker">New Contributor</p>
+                <p className="section-kicker">New Donor</p>
                 <h2 id="contributor-title">Add Funding Details</h2>
               </div>
               <button className="modal-close" type="button" onClick={() => setModalOpen(false)} aria-label="Close form">
@@ -704,7 +704,7 @@ function CrowdfundingPage() {
               </label>
               <label className="checkbox-row">
                 <input name="anonymous" type="checkbox" checked={form.anonymous} onChange={updateField} />
-                <span>Keep this contribution anonymous on the public leaderboard</span>
+                <span>Keep this donation anonymous on the public leaderboard</span>
               </label>
 
               <div className="form-actions">
