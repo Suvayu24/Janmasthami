@@ -548,7 +548,7 @@ function CrowdfundingPage() {
             {!isAdmin && (
               <div className="public-contribution">
                 <a className="primary-link button-link" href={publicContributionFormUrl} target="_blank" rel="noreferrer">
-                  I want to contribute myself
+                  I want to Donate 
                 </a>
                 <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via Email!</p>
               </div>
@@ -559,8 +559,8 @@ function CrowdfundingPage() {
         <section className="leaderboard-section section-shell" aria-label="Crowd funding leaderboard">
           <div className="leaderboard-heading">
             <div>
-              <p className="section-kicker">All Contributions</p>
-              <h2>Contributor Leaderboard</h2>
+              <p className="section-kicker">All Donors</p>
+              
             </div>
             <span>{funding.contributors.length} total contributors</span>
           </div>
@@ -680,7 +680,7 @@ function CrowdfundingPage() {
                 <input name="name" value={form.name} onChange={updateField} placeholder="Contributor name" required />
               </label>
               <label>
-                <span>Amount Contributed</span>
+                <span>Amount Donated</span>
                 <input
                   name="amountContributed"
                   type="number"
