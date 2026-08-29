@@ -59,3 +59,4 @@ main().catch((error) => {
   console.error("Failed to create admin:", error.message);
   process.exitCode = 1;
 });
+

@@ -19,6 +19,17 @@ async function sendViaBrevo({ to, name, subject, html }) {
   const fromEmail = process.env.SMTP_USER; // reusing the same verified Gmail address as sender
   const fromName = process.env.FROM_NAME || "Janmashtami Festival Committee";
 
+  // Fail with a specific, readable reason instead of letting a missing/blank
+  // env var turn into a confusing Brevo 401 further down. Render env vars are
+  // set separately from local server/.env (which is gitignored and never
+  // deployed) — see server/.env.example + README for the full checklist.
+  if (!apiKey) {
+    throw new Error("BREVO_API_KEY is not set in the server environment (check Render > Environment)");
+  }
+  if (!fromEmail) {
+    throw new Error("SMTP_USER (used as the Brevo sender email) is not set in the server environment");
+  }
+
   const resp = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: {
@@ -143,6 +154,11 @@ router.post("/payment-approved", async (req, res) => {
   });
 
   if (!emailResult.ok) {
+    // Logged here (not just returned to the sheet) so the full reason is
+    // always visible in Render > Logs, even if the 500-char cell in the
+    // sheet ever gets truncated or Apps Script fails to write it.
+    console.error(`Receipt email failed for ${email} (contributor ${contributor._id}):`, emailResult.detail);
+
     return res.status(200).json({
       status: "partial",
       message: `contributor saved, email failed: ${emailResult.detail}`,
@@ -150,6 +166,7 @@ router.post("/payment-approved", async (req, res) => {
     });
   }
 
+  console.log(`Receipt email sent to ${email} (contributor ${contributor._id})`);
   return res.status(200).json({ status: "success", contributorId: contributor._id });
 });
 

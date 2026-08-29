@@ -524,7 +524,7 @@ function CrowdfundingPage() {
                 <a className="primary-link button-link" href={publicContributionFormUrl} target="_blank" rel="noreferrer">
                   I want to contribute myself
                 </a>
-                <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via WhatsApp!</p>
+                <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via Email!</p>
               </div>
             )}
           </div>

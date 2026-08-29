@@ -1,7 +1,7 @@
 /**
  * ====== CONFIGURATION — edit these two lines ======
  */
-const WEBHOOK_URL = 'https://janmasthami-festival.onrender.com/webhooks/payment-approved'; // see README for pre-deploy testing
+const WEBHOOK_URL = 'https://janmasthami-festival.onrender.com/api/webhooks/payment-approved'; // see README for pre-deploy testing
 const SHARED_SECRET = 'ed23b709e7010fe170c70f9144e694a96223ddf238dfcfd58366707f7da30a76'; // must match server .env WEBHOOK_SECRET
 
 // These must match your Sheet's header row EXACTLY (case-sensitive, including punctuation)
@@ -112,7 +112,8 @@ function processApprovedRow(sheet, headers, row, sentCol) {
       // Contributor was saved but the email failed — mark as processed
       // (starts with "Yes") so it's never retried/duplicated, but flag it
       // for you to notice and resend the receipt manually.
-      sheet.getRange(row, sentCol).setValue('Yes (email failed - check logs)');
+      const message = body.message || response.getContentText() || 'email failed - check Render logs';
+      sheet.getRange(row, sentCol).setValue(('Yes (' + message + ')').slice(0, 500));
       Logger.log('Row ' + row + ' partial: ' + (body.message || response.getContentText()));
     }
   } else {
