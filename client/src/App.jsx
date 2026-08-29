@@ -255,7 +255,7 @@ function HomePage() {
             </p>
             <div className="hero-actions">
               <a className="primary-link" href="#events">Explore Events</a>
-              <a className="secondary-link" href="/crowdfunding">Support the Festival</a>
+              <a className="secondary-link" href="/crowdfunding">Donate</a>
             </div>
           </div>
 
