@@ -559,10 +559,9 @@ function CrowdfundingPage() {
         <section className="leaderboard-section section-shell" aria-label="Crowd funding leaderboard">
           <div className="leaderboard-heading">
             <div>
-              <p className="section-kicker">All Donors</p>
-              
+              <h2>List of Donors</h2>
             </div>
-            <span>{funding.contributors.length} total contributors</span>
+            <span>{funding.contributors.length} total donors</span>
           </div>
 
           {error && <p className="status-message error-message">{error}</p>}
