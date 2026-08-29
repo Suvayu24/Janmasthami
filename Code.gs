@@ -3,6 +3,16 @@ const SHARED_SECRET = "PUT-A-LONG-RANDOM-SECRET-HERE";
 
 const PAYMENT_STATUS_HEADER = "Payment Status";
 const EMAIL_SENT_HEADER = "Email Sent";
+const APPROVED_VALUE = "Approved";
+
+const NAME_HEADER = "Full Name";
+const PHONE_HEADER = "Phone Number (WhatsApp Number)";
+const ROLL_HEADER = "Roll Number";
+const HOSTEL_HEADER = "Hostel and Room Number (Ex: BH5 - 5xxx)";
+const AMOUNT_HEADER = "Amount you want to contribute (in Rs)";
+const EMAIL_HEADER = "Email Address";
+const ANONYMOUS_HEADER = "Do you want to stay anonymous on our website?";
+const TRANSACTION_ID_HEADER = "Transaction ID";
 
 function installTrigger() {
   const spreadsheet = SpreadsheetApp.getActive();
@@ -30,7 +40,7 @@ function onEditInstallable(event) {
   const paymentStatusColumn = findColumn_(headers, PAYMENT_STATUS_HEADER);
 
   if (!paymentStatusColumn || column !== paymentStatusColumn) return;
-  if (String(event.value || "").trim().toLowerCase() !== "approved") return;
+  if (String(event.value || "").trim() !== APPROVED_VALUE) return;
 
   processApprovedRow_(sheet, row);
 }
@@ -67,7 +77,8 @@ function processApprovedRow_(sheet, row) {
   }
 
   if (statusCode >= 200 && statusCode < 300 && body.status === "partial") {
-    sheet.getRange(row, emailSentColumn).setValue("Yes (email failed - check logs)");
+    const message = body.message || "email failed - check Render logs";
+    sheet.getRange(row, emailSentColumn).setValue(`Yes (${message})`.slice(0, 500));
     return;
   }
 
@@ -77,14 +88,14 @@ function processApprovedRow_(sheet, row) {
 
 function buildPayload_(headers, values) {
   return {
-    name: pick_(headers, values, ["Name of User", "Name"]),
-    email: pick_(headers, values, ["Email Address", "Email"]),
-    phone: pick_(headers, values, ["Phone Number", "Phone"]),
-    roll_number: pick_(headers, values, ["Roll Number"]),
-    hostel_room: pick_(headers, values, ["Hostel and Room Number", "Hostel Room"]),
-    amount: pick_(headers, values, ["Amount You want to contribute", "Amount"]),
-    anonymous: pick_(headers, values, ["Anonymous", "Do you want to stay anonymous on our website?"]),
-    transaction_id: pick_(headers, values, ["Transaction ID", "Extracted Transaction ID", "UPI Transaction ID"]),
+    name: pick_(headers, values, NAME_HEADER),
+    email: pick_(headers, values, EMAIL_HEADER),
+    phone: pick_(headers, values, PHONE_HEADER),
+    roll_number: pick_(headers, values, ROLL_HEADER),
+    hostel_room: pick_(headers, values, HOSTEL_HEADER),
+    amount: pick_(headers, values, AMOUNT_HEADER),
+    anonymous: pick_(headers, values, ANONYMOUS_HEADER),
+    transaction_id: pickOptional_(headers, values, TRANSACTION_ID_HEADER),
   };
 }
 
@@ -110,13 +121,16 @@ function ensureColumn_(sheet, headerName) {
   return newColumn;
 }
 
-function pick_(headers, values, possibleHeaders) {
-  for (const headerName of possibleHeaders) {
-    const index = headers.findIndex((header) => header === headerName);
-    if (index !== -1) return String(values[index] || "").trim();
-  }
+function pick_(headers, values, headerName) {
+  const index = headers.findIndex((header) => header === headerName);
+  if (index !== -1) return String(values[index] || "").trim();
 
-  return "";
+  throw new Error(`Missing required header: ${headerName}`);
+}
+
+function pickOptional_(headers, values, headerName) {
+  const index = headers.findIndex((header) => header === headerName);
+  return index === -1 ? "" : String(values[index] || "").trim();
 }
 
 function parseJson_(text) {

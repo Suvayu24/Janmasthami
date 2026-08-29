@@ -19,6 +19,14 @@ async function sendViaBrevo({ to, name, subject, html }) {
   const fromEmail = process.env.SMTP_USER; // reusing the same verified Gmail address as sender
   const fromName = process.env.FROM_NAME || "Janmashtami Festival Committee";
 
+  if (!apiKey) {
+    throw new Error("BREVO_API_KEY is missing in server environment variables");
+  }
+
+  if (!fromEmail) {
+    throw new Error("SMTP_USER sender email is missing in server environment variables");
+  }
+
   const resp = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: {
@@ -91,15 +99,6 @@ async function sendReceiptEmail({ to, name, amount, transactionId }) {
 router.post("/payment-approved", async (req, res) => {
   const webhookSecret = process.env.WEBHOOK_SECRET;
   const receivedSecret = req.headers["x-webhook-secret"];
-
-  
-
-  // TEMPORARY DEBUG LOGGING — remove once the 401 is sorted out.
-  console.log("=== DEBUG payment-approved ===");
-  console.log("expected (from .env) :", JSON.stringify(webhookSecret));
-  console.log("received (from header):", JSON.stringify(receivedSecret));
-  console.log("match?                :", webhookSecret === receivedSecret);
-  console.log("===============================");
 
   if (receivedSecret !== webhookSecret) {
     return res.status(401).json({ status: "error", message: "unauthorized" });
