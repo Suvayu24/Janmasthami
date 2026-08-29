@@ -14,13 +14,13 @@ const events = [
       "Classical and festive performances bring Krishna's stories to life through movement, colour, and stage energy."
   },
   {
-    title: "Music",
-    type: "Melodies that lift the heart",
-    image: "/assets/music.jpg",
+    title: "Games & Stalls",
+    type: "Live the spirit of Lord Krishna",
+    image: "/assets/games.jpg",
     wheelImage: "/assets/pastime-2.jpg",
-    alt: "Music event",
+    alt: "Games & Stalls event",
     description:
-      "Live devotional melodies, percussion, and chorus moments set the tone for an evening of shared celebration."
+      "Fun, interactive games and stalls, like Dahi Handi, with music and prizes to keep the energy high."
   },
   {
     title: "Bhajan Clubbing",
@@ -38,7 +38,7 @@ const events = [
     wheelImage: "/assets/pastime-4.jpg",
     alt: "Drama event",
     description:
-      "A theatrical retelling of mythological moments with expressive characters, costumes, and campus stagecraft."
+      "A compelling narrative of our daily lives potrayed in relation with the timeless teachings of Lord Krishna, featuring expressive characters, costumes, and stagecraft."
   },
   {
     title: "Abhishek",
@@ -85,6 +85,9 @@ const initialForm = {
   phoneNumber: "",
   anonymous: false
 };
+
+const publicContributionFormUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLScoTBDpIejuC-09NGHhK4X_DebKEdxWkug8ycRGAKhC5xGARQ/viewform";
 
 function formatCurrency(amount) {
   return new Intl.NumberFormat("en-IN", {
@@ -515,6 +518,14 @@ function CrowdfundingPage() {
               <button className="primary-link button-link" type="button" onClick={() => setModalOpen(true)}>
                 Add Contributor
               </button>
+            )}
+            {!isAdmin && (
+              <div className="public-contribution">
+                <a className="primary-link button-link" href={publicContributionFormUrl} target="_blank" rel="noreferrer">
+                  I want to contribute myself
+                </a>
+                <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via WhatsApp!</p>
+              </div>
             )}
           </div>
         </section>

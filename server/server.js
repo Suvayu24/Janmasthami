@@ -6,6 +6,7 @@ import express from "express";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import contributorRoutes from "./routes/contributors.js";
+import webhookRoutes from "./routes/webhooks.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/contributors", contributorRoutes);
+app.use("/api/webhooks", webhookRoutes);
 
 const clientDist = path.join(__dirname, "..", "client", "dist");
 app.use(express.static(clientDist));
