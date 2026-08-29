@@ -404,6 +404,8 @@ function HomePage() {
   );
 }
 
+const contributorsPerPage = 10;
+
 function CrowdfundingPage() {
   const { admin, isAdmin, logout } = useAdminAuth();
   const [funding, setFunding] = useState({ totalFunds: 0, leaderboard: [], contributors: [] });
@@ -412,8 +414,31 @@ function CrowdfundingPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const topTen = useMemo(() => funding.leaderboard || [], [funding.leaderboard]);
+  // Newest contribution first, regardless of the amount-sorted order the
+  // API returns contributors in.
+  const allContributors = useMemo(
+    () =>
+      [...(funding.contributors || [])].sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      ),
+    [funding.contributors]
+  );
+
+  const totalPages = Math.max(1, Math.ceil(allContributors.length / contributorsPerPage));
+
+  // Keep the current page in range if the list shrinks (e.g. after a
+  // delete) or grows back.
+  useEffect(() => {
+    setCurrentPage((current) => Math.min(Math.max(current, 1), totalPages));
+  }, [totalPages]);
+
+  const pageStart = (currentPage - 1) * contributorsPerPage;
+  const visibleContributors = useMemo(
+    () => allContributors.slice(pageStart, pageStart + contributorsPerPage),
+    [allContributors, pageStart]
+  );
 
   async function loadContributors() {
     setLoading(true);
@@ -470,6 +495,7 @@ function CrowdfundingPage() {
 
       setForm(initialForm);
       setModalOpen(false);
+      setCurrentPage(1);
       await loadContributors();
     } catch (submitError) {
       setError(submitError.message);
@@ -533,7 +559,7 @@ function CrowdfundingPage() {
         <section className="leaderboard-section section-shell" aria-label="Crowd funding leaderboard">
           <div className="leaderboard-heading">
             <div>
-              <p className="section-kicker">Top 10</p>
+              <p className="section-kicker">All Contributions</p>
               <h2>Contributor Leaderboard</h2>
             </div>
             <span>{funding.contributors.length} total contributors</span>
@@ -557,15 +583,15 @@ function CrowdfundingPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {topTen.length === 0 && (
+                  {visibleContributors.length === 0 && (
                     <tr>
                       <td colSpan={isAdmin ? "7" : "6"} className="empty-table">No contributors yet.</td>
                     </tr>
                   )}
-                  {topTen.map((contributor, index) =>
+                  {visibleContributors.map((contributor, index) =>
                     contributor.anonymous ? (
                       <tr className="anonymous-row" key={contributor.id}>
-                        <td>{index + 1}</td>
+                        <td>{pageStart + index + 1}</td>
                         <td colSpan="4">Anonymous contributor</td>
                         <td className="amount-cell">{formatCurrency(contributor.amountContributed)}</td>
                         {isAdmin && (
@@ -583,7 +609,7 @@ function CrowdfundingPage() {
                       </tr>
                     ) : (
                       <tr key={contributor.id}>
-                        <td>{index + 1}</td>
+                        <td>{pageStart + index + 1}</td>
                         <td>{contributor.name}</td>
                         <td>{contributor.rollNumber}</td>
                         <td>{contributor.roomNumber}</td>
@@ -607,6 +633,30 @@ function CrowdfundingPage() {
                 </tbody>
               </table>
             </div>
+          )}
+
+          {!loading && allContributors.length > 0 && (
+            <nav className="pagination" aria-label="Contributor list pages">
+              <button
+                type="button"
+                className="secondary-action"
+                onClick={() => setCurrentPage((current) => Math.max(1, current - 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+              <span className="pagination-status">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                type="button"
+                className="secondary-action"
+                onClick={() => setCurrentPage((current) => Math.min(totalPages, current + 1))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </nav>
           )}
         </section>
       </main>
