@@ -89,6 +89,152 @@ const initialForm = {
 const publicContributionFormUrl =
   "https://docs.google.com/forms/d/e/1FAIpQLScoTBDpIejuC-09NGHhK4X_DebKEdxWkug8ycRGAKhC5xGARQ/viewform";
 
+const volunteerFormUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfHSbiAOL6DhNzWMJHg2aoIxwjhlWOvXw4Seuv1oi_r9XDJjg/viewform?usp=publish-editor";
+
+// One entry per department: the title and description power the cards at
+// the top of the Our Team page, and the same coordinators list powers the
+// contact section at the bottom. A missing phone number renders as "TBA"
+// rather than being left off the coordinator's line.
+const departments = [
+  {
+    key: "overall",
+    title: "Overall Coordinators",
+    description:
+      "Lead the overall planning and execution of Janmashtami Utsav, keeping every department aligned and on schedule.",
+    coordinators: [
+      { name: "Bhavyansh Agarwal", phone: "9649759640" },
+      { name: "Yash Sharma", phone: "9680385225" }
+    ]
+  },
+  {
+    key: "prasad",
+    title: "Prasad Distribution Team",
+    description: "Organise and distribute prasadam to everyone gathered once the evening's performances wrap up.",
+    coordinators: [
+      { name: "Shaurya", phone: "7895694101" },
+      { name: "Jatin", phone: "7742688877" }
+    ]
+  },
+  {
+    key: "reception",
+    title: "Guest Reception",
+    description: "Welcome guests at the gates, manage entries, and make sure everyone feels at home through the evening.",
+    coordinators: [
+      { name: "Abhay", phone: "8175995867" },
+      { name: "Achyut", phone: "7029754844" }
+    ]
+  },
+  {
+    key: "stage",
+    title: "Stage Preparation",
+    description: "Set up and manage the stage, backdrop, and seating for every performance of the night.",
+    coordinators: [{ name: "Tanmai", phone: "9490964408" }]
+  },
+  {
+    key: "deity",
+    title: "Deity Worship",
+    description: "Conduct the abhishek ceremony and every ritual honouring the deities at the heart of the celebration.",
+    coordinators: [
+      { name: "Alok", phone: null },
+      { name: "Harismaran", phone: null }
+    ]
+  },
+  {
+    key: "sound",
+    title: "Sound & Lights",
+    description: "Run the audio and lighting setup that brings every performance and the Bhajan Clubbing finale to life.",
+    coordinators: [{ name: "AMS", phone: null }]
+  },
+  {
+    key: "screening",
+    title: "Screening",
+    description: "Manage entry screening and crowd flow so the evening stays safe, smooth, and well organised.",
+    coordinators: [{ name: "Shaurya", phone: "7895694101" }]
+  },
+  {
+    key: "finance",
+    title: "Finances",
+    description: "Handle budgeting, sponsorships, and the funds raised to bring the festival to life.",
+    coordinators: [{ name: "Yash Sharma", phone: "9680385225" }]
+  },
+  {
+    key: "dance",
+    title: "Dance",
+    description: "Choreograph and coordinate the dance performances that bring Krishna's leelas to the stage.",
+    coordinators: [{ name: "Harismaran", phone: null }]
+  },
+  {
+    key: "music",
+    title: "Music",
+    description: "Lead the bhajan, kirtan, and musical performances that carry the evening's devotion.",
+    coordinators: [
+      { name: "Advait", phone: "9370265588" },
+      { name: "Jatin", phone: "7742688877" }
+    ]
+  },
+  {
+    key: "publicity",
+    title: "Publicity",
+    description: "Spread the word about the festival across campus and beyond, so nobody misses the celebration.",
+    coordinators: [{ name: "Sarthak Dey", phone: "8603244656" }]
+  },
+  {
+    key: "digital",
+    title: "Digital Media",
+    description: "Create and manage social media content, photography, and videography for the festival.",
+    coordinators: [
+      { name: "Jaswin", phone: "8985185840" },
+      { name: "Sarthak Dey", phone: "8603244656" },
+      { name: "Aditya Gupta", phone: "9142235588" }
+    ]
+  },
+  {
+    key: "anchoring",
+    title: "Anchoring",
+    description: "Host and anchor the evening on stage, keeping the audience engaged between every event.",
+    coordinators: [{ name: "To be announced", phone: null }]
+  },
+  {
+    key: "dahihandi",
+    title: "Dahi Handi",
+    description: "Organise the iconic Dahi Handi human-pyramid competition, the evening's most electric moment.",
+    coordinators: [{ name: "Yash Mehtre", phone: "8369417986" }]
+  },
+  {
+    key: "games",
+    title: "Games & Stalls",
+    description: "Set up fun, interactive games and stalls to keep the festive energy high all evening.",
+    coordinators: [{ name: "Vamsidhar", phone: "7989431729" }]
+  },
+  {
+    key: "drama",
+    title: "Drama",
+    description: "Write, direct, and perform the devotional drama that brings Krishna's stories to life on stage.",
+    coordinators: [{ name: "Avinash Jha", phone: "9521277960" }]
+  },
+  {
+    key: "website",
+    title: "Website & Tech Queries",
+    description: "The point of contact for anything related to the festival website or the crowdfunding page.",
+    coordinators: [{ name: "Suvayu", phone: "6289345867" }]
+  }
+];
+
+const eventPosters = [
+  { src: "/assets/posters/poster-1.jpg", alt: "Dahi Handi event poster" },
+  { src: "/assets/posters/poster-2.jpg", alt: "Bhajan Clubbing event poster" },
+  { src: "/assets/posters/poster-3.jpg", alt: "Drama event poster" },
+  { src: "/assets/posters/poster-4.jpg", alt: "Dance event poster" },
+  { src: "/assets/posters/poster-5.jpg", alt: "Games & Quizzes event poster" },
+  { src: "/assets/posters/poster-6.jpg", alt: "Songs — Bhajan & Kirtan event poster" },
+  { src: "/assets/posters/poster-7.jpg", alt: "Awards & Certificate Distribution poster" }
+];
+
+function formatPhone(number) {
+  return `${number.slice(0, 5)} ${number.slice(5)}`;
+}
+
 function formatCurrency(amount) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -117,6 +263,7 @@ function Header({ funding = false }) {
         <a href={`${homePrefix}#schedule`}>Schedule</a>
         {/* <a href={`${homePrefix}#venue`}>Venue</a> */}
         <a href="/crowdfunding">Crowd Funding</a>
+        <a href="/our-team">Our Team</a>
         {/* "Admin Login" is the only auth link surfaced here — normal
             visitors get no benefit from logging in, so registration isn't
             advertised in the navbar. */}
@@ -255,7 +402,7 @@ function HomePage() {
             </p>
             <div className="hero-actions">
               <a className="primary-link" href="#events">Explore Events</a>
-              <a className="secondary-link" href="/crowdfunding">Donate</a>
+              <a className="secondary-link" href="/crowdfunding">Support the Festival</a>
             </div>
           </div>
 
@@ -548,9 +695,9 @@ function CrowdfundingPage() {
             {!isAdmin && (
               <div className="public-contribution">
                 <a className="primary-link button-link" href={publicContributionFormUrl} target="_blank" rel="noreferrer">
-                  I want to Donate 
+                  I want to contribute myself
                 </a>
-                <p>Thank you for your contributions🙏 After we have rewieved your form, your donation will be reflected on the leaderboard.</p>
+                <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via Email!</p>
               </div>
             )}
           </div>
@@ -559,13 +706,14 @@ function CrowdfundingPage() {
         <section className="leaderboard-section section-shell" aria-label="Crowd funding leaderboard">
           <div className="leaderboard-heading">
             <div>
-              <h2>List of Donors</h2>
+              <p className="section-kicker">All Contributions</p>
+              <h2>Contributor Leaderboard</h2>
             </div>
-            <span>{funding.contributors.length} total donors</span>
+            <span>{funding.contributors.length} total contributors</span>
           </div>
 
           {error && <p className="status-message error-message">{error}</p>}
-          {loading && <p className="status-message">Loading donors...</p>}
+          {loading && <p className="status-message">Loading contributors...</p>}
 
           {!loading && (
             <div className="leaderboard-table-wrap">
@@ -665,7 +813,7 @@ function CrowdfundingPage() {
           <section className="contributor-modal" role="dialog" aria-modal="true" aria-labelledby="contributor-title" onMouseDown={(event) => event.stopPropagation()}>
             <div className="modal-heading">
               <div>
-                <p className="section-kicker">New Donor</p>
+                <p className="section-kicker">New Contributor</p>
                 <h2 id="contributor-title">Add Funding Details</h2>
               </div>
               <button className="modal-close" type="button" onClick={() => setModalOpen(false)} aria-label="Close form">
@@ -679,7 +827,7 @@ function CrowdfundingPage() {
                 <input name="name" value={form.name} onChange={updateField} placeholder="Contributor name" required />
               </label>
               <label>
-                <span>Amount Donated</span>
+                <span>Amount Contributed</span>
                 <input
                   name="amountContributed"
                   type="number"
@@ -704,7 +852,7 @@ function CrowdfundingPage() {
               </label>
               <label className="checkbox-row">
                 <input name="anonymous" type="checkbox" checked={form.anonymous} onChange={updateField} />
-                <span>Keep this donation anonymous on the public leaderboard</span>
+                <span>Keep this contribution anonymous on the public leaderboard</span>
               </label>
 
               <div className="form-actions">
@@ -725,6 +873,137 @@ function CrowdfundingPage() {
   );
 }
 
+function PosterCarousel() {
+  const [activePoster, setActivePoster] = useState(0);
+
+  return (
+    <div className="poster-carousel">
+      <div className="poster-carousel-viewport">
+        <img
+          className="poster-carousel-image"
+          src={eventPosters[activePoster].src}
+          alt={eventPosters[activePoster].alt}
+        />
+      </div>
+      <div className="poster-carousel-controls" aria-label="Poster carousel controls">
+        <button
+          type="button"
+          className="carousel-btn"
+          onClick={() => setActivePoster((activePoster - 1 + eventPosters.length) % eventPosters.length)}
+          aria-label="Previous poster"
+        >
+          &lsaquo;
+        </button>
+        <div className="carousel-dots" aria-label="Select poster">
+          {eventPosters.map((poster, index) => (
+            <button
+              key={poster.src}
+              type="button"
+              className={`carousel-dot${index === activePoster ? " is-active" : ""}`}
+              aria-label={`Show poster ${index + 1}`}
+              aria-pressed={index === activePoster}
+              onClick={() => setActivePoster(index)}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          className="carousel-btn"
+          onClick={() => setActivePoster((activePoster + 1) % eventPosters.length)}
+          aria-label="Next poster"
+        >
+          &rsaquo;
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function OurTeamPage() {
+  return (
+    <>
+      <Header funding />
+      <main className="team-page">
+        <section className="team-hero section-shell">
+          <p className="section-kicker">Behind Janmashtami Utsav 2026</p>
+          <h1>Meet the Team &amp; Join Us</h1>
+          <p className="team-hero-copy">
+            Janmashtami Utsav is put together by student volunteers spread across departments — from stage and
+            sound to prasadam and publicity. Here's what each team does, how to join one, and who to reach out
+            to with questions.
+          </p>
+        </section>
+
+        <section className="departments-section section-shell" id="departments">
+          <div className="departments-heading">
+            <p className="section-kicker">Our Departments</p>
+            <h2>What Each Team Does</h2>
+          </div>
+          <div className="dept-grid">
+            {departments.map((department) => (
+              <article className="dept-card" key={department.key}>
+                <h3>{department.title}</h3>
+                <p>{department.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="volunteer-cta section-shell">
+          <div className="volunteer-panel">
+            <div>
+              <p className="section-kicker">Join The Team</p>
+              <h2>Volunteer for Janmashtami Utsav 2026</h2>
+              <p>
+                Pick a team that excites you and be part of the crew that brings this evening to life. Fill out
+                the form below and we'll get in touch.
+              </p>
+            </div>
+            <a className="primary-link button-link" href={volunteerFormUrl} target="_blank" rel="noreferrer">
+              Sign Up to Volunteer
+            </a>
+          </div>
+        </section>
+
+        <section className="poster-carousel-section section-shell" aria-label="Event posters">
+          <div className="departments-heading">
+            <p className="section-kicker">A Glimpse of the Evening</p>
+            <h2>Event Posters</h2>
+          </div>
+          <PosterCarousel />
+        </section>
+
+        <section className="coordinators-section section-shell" id="coordinators">
+          <div className="departments-heading">
+            <p className="section-kicker">Have Questions?</p>
+            <h2>Department Coordinators</h2>
+          </div>
+          <div className="coordinator-grid">
+            {departments.map((department) => (
+              <article className="coordinator-card" key={department.key}>
+                <h3>{department.title}</h3>
+                <ul className="coordinator-list">
+                  {department.coordinators.map((person) => (
+                    <li key={`${department.key}-${person.name}`}>
+                      <span>{person.name}</span>
+                      {person.phone ? (
+                        <a href={`tel:+91${person.phone}`}>+91 {formatPhone(person.phone)}</a>
+                      ) : (
+                        <span className="tba">TBA</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
+
 function Footer() {
   return (
     <footer className="site-footer">
@@ -738,6 +1017,7 @@ export default function App() {
   const path = window.location.pathname;
 
   if (path === "/crowdfunding") return <CrowdfundingPage />;
+  if (path === "/our-team") return <OurTeamPage />;
   if (path === "/admin-login") return <AdminLoginPage />;
   return <HomePage />;
 }

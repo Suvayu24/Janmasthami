@@ -831,6 +831,198 @@ h1 {
   opacity: 0.7;
 }
 
+.team-page {
+  min-height: 100vh;
+  padding: clamp(7rem, 12vw, 9rem) 0 clamp(5rem, 8vw, 7rem);
+  background:
+    radial-gradient(circle at 14% 8%, rgba(244, 189, 69, 0.24), transparent 20rem),
+    radial-gradient(circle at 88% 14%, rgba(156, 40, 72, 0.14), transparent 18rem),
+    linear-gradient(135deg, rgba(255, 250, 240, 0.92), rgba(255, 245, 220, 0.96));
+}
+
+.team-hero {
+  max-width: 900px;
+}
+
+.team-hero h1 {
+  margin-top: 0.7rem;
+  color: var(--ink);
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+}
+
+.team-hero-copy {
+  margin: 1.2rem 0 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.18rem);
+  line-height: 1.75;
+}
+
+.departments-section,
+.volunteer-cta,
+.poster-carousel-section,
+.coordinators-section {
+  margin-top: clamp(3rem, 7vw, 5rem);
+}
+
+.departments-heading {
+  width: min(760px, 100%);
+  margin-bottom: 1.5rem;
+}
+
+.departments-heading h2 {
+  margin-top: 0.55rem;
+  color: var(--ink);
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+}
+
+.dept-grid,
+.coordinator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.1rem;
+}
+
+.dept-card,
+.coordinator-card {
+  position: relative;
+  padding: 1.5rem;
+  border: 1px solid rgba(16, 35, 63, 0.12);
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 250, 240, 0.92)),
+    rgba(255, 255, 255, 0.6);
+  box-shadow: 0 16px 46px rgba(51, 34, 13, 0.08);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.dept-card:hover,
+.coordinator-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgba(14, 127, 134, 0.35), 0 20px 50px rgba(51, 34, 13, 0.14);
+}
+
+.dept-card h3 {
+  margin: 0 0 0.55rem;
+  color: var(--ink);
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 1.12rem;
+}
+
+.dept-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.volunteer-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: clamp(1.6rem, 4vw, 2.6rem);
+  border: 1px solid rgba(168, 111, 32, 0.22);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 250, 240, 0.92)),
+    #fffaf0;
+  box-shadow: var(--shadow);
+}
+
+.volunteer-panel > div {
+  max-width: 560px;
+}
+
+.volunteer-panel h2 {
+  margin-top: 0.5rem;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+}
+
+.volunteer-panel p {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.volunteer-panel .primary-link {
+  flex-shrink: 0;
+  color: #1f2635;
+}
+
+.poster-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #10233f, #1b3358 60%, #10233f);
+  box-shadow: var(--shadow);
+}
+
+.poster-carousel-viewport {
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  min-height: min(70vh, 600px);
+}
+
+.poster-carousel-image {
+  max-height: min(64vh, 560px);
+  width: auto;
+  border-radius: 8px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+.poster-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 1.5rem clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.coordinator-card h3 {
+  margin: 0 0 0.8rem;
+  color: var(--saffron);
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.coordinator-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.coordinator-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.coordinator-list a {
+  color: var(--teal);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.coordinator-list a:hover {
+  text-decoration: underline;
+}
+
+.coordinator-list .tba {
+  color: var(--muted);
+  font-weight: 600;
+  font-style: italic;
+}
+
 .crowdfunding-page {
   min-height: 100vh;
   padding: clamp(7rem, 12vw, 9rem) 0 clamp(5rem, 8vw, 7rem);
@@ -958,6 +1150,24 @@ h1 {
 .leaderboard-table td:first-child {
   color: var(--saffron);
   font-weight: 900;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.pagination .secondary-action:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination-status {
+  color: var(--muted);
+  font-weight: 800;
 }
 
 .amount-cell {
@@ -1255,6 +1465,16 @@ h1 {
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: 0.75rem;
+  }
+
+  .volunteer-panel {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .volunteer-panel .primary-link {
+    width: 100%;
   }
 
   h1 {
