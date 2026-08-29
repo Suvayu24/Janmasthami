@@ -550,7 +550,7 @@ function CrowdfundingPage() {
                 <a className="primary-link button-link" href={publicContributionFormUrl} target="_blank" rel="noreferrer">
                   I want to Donate 
                 </a>
-                <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via Email!</p>
+                <p>Thank you for your contributions🙏 After we have rewieved your form, your donation will be reflected on the leaderboard.</p>
               </div>
             )}
           </div>
