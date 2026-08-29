@@ -77,6 +77,31 @@ const schedule = [
   ["8:00 PM", "Prasadam", "Prasadam Distribution for All."]
 ];
 
+// Festival start time, fixed to IST (+05:30) so the countdown reads the
+// same for every visitor regardless of their own timezone.
+const eventCountdownTarget = new Date("2026-09-05T17:00:00+05:30").getTime();
+
+function useCountdown(targetTime) {
+  const [timeLeft, setTimeLeft] = useState(() => Math.max(0, targetTime - Date.now()));
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setTimeLeft(Math.max(0, targetTime - Date.now()));
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [targetTime]);
+
+  const totalMinutes = Math.floor(timeLeft / 60000);
+
+  return {
+    days: Math.floor(totalMinutes / (60 * 24)),
+    hours: Math.floor((totalMinutes % (60 * 24)) / 60),
+    minutes: totalMinutes % 60,
+    isOver: timeLeft <= 0
+  };
+}
+
 const initialForm = {
   name: "",
   amountContributed: "",
@@ -212,18 +237,24 @@ const departments = [
     title: "Drama",
     description: "Write, direct, and perform the devotional drama that brings Krishna's stories to life on stage.",
     coordinators: [{ name: "Avinash Jha", phone: "9521277960" }]
+  },
+  {
+    key: "website",
+    title: "Website & Tech Queries",
+    description: "The point of contact for anything related to the festival website or the crowdfunding page.",
+    coordinators: [{ name: "Suvayu", phone: "6289345867" }]
   }
 ];
 
-const eventPosters = [
-  { src: "/assets/posters/poster-1.jpg", alt: "Dahi Handi event poster" },
-  { src: "/assets/posters/poster-2.jpg", alt: "Bhajan Clubbing event poster" },
-  { src: "/assets/posters/poster-3.jpg", alt: "Drama event poster" },
-  { src: "/assets/posters/poster-4.jpg", alt: "Dance event poster" },
-  { src: "/assets/posters/poster-5.jpg", alt: "Games & Quizzes event poster" },
-  { src: "/assets/posters/poster-6.jpg", alt: "Songs — Bhajan & Kirtan event poster" },
-  { src: "/assets/posters/poster-7.jpg", alt: "Awards & Certificate Distribution poster" }
-];
+// const eventPosters = [
+//   { src: "/assets/posters/poster-1.jpg", alt: "Dahi Handi event poster" },
+//   { src: "/assets/posters/poster-2.jpg", alt: "Bhajan Clubbing event poster" },
+//   { src: "/assets/posters/poster-3.jpg", alt: "Drama event poster" },
+//   { src: "/assets/posters/poster-4.jpg", alt: "Dance event poster" },
+//   { src: "/assets/posters/poster-5.jpg", alt: "Games & Quizzes event poster" },
+//   { src: "/assets/posters/poster-6.jpg", alt: "Songs — Bhajan & Kirtan event poster" },
+//   { src: "/assets/posters/poster-7.jpg", alt: "Awards & Certificate Distribution poster" }
+// ];
 
 function formatPhone(number) {
   return `${number.slice(0, 5)} ${number.slice(5)}`;
@@ -270,6 +301,40 @@ function Header({ funding = false }) {
         )}
       </nav>
     </header>
+  );
+}
+
+function EventCountdown() {
+  const { days, hours, minutes, isOver } = useCountdown(eventCountdownTarget);
+
+  if (isOver) {
+    return (
+      <div className="countdown-strip">
+        <p className="countdown-live">The celebration has begun — see you there!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="countdown-strip" aria-label="Countdown to Janmashtami Utsav">
+      <p className="countdown-label">Janmashtami Utsav begins in</p>
+      <div className="countdown-figures">
+        <div className="countdown-unit">
+          <strong>{String(days).padStart(2, "0")}</strong>
+          <span>Days</span>
+        </div>
+        <span className="countdown-divider">:</span>
+        <div className="countdown-unit">
+          <strong>{String(hours).padStart(2, "0")}</strong>
+          <span>Hours</span>
+        </div>
+        <span className="countdown-divider">:</span>
+        <div className="countdown-unit">
+          <strong>{String(minutes).padStart(2, "0")}</strong>
+          <span>Minutes</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -418,6 +483,10 @@ function HomePage() {
               The festival brings six experiences into one flowing celebration. Scroll through to discover
               every event, then continue to the full evening schedule and venue details.
             </p>
+          </div>
+
+          <div className="section-shell">
+            <EventCountdown />
           </div>
         </section>
 
@@ -959,13 +1028,13 @@ function OurTeamPage() {
           </div>
         </section>
 
-        <section className="poster-carousel-section section-shell" aria-label="Event posters">
+        {/* <section className="poster-carousel-section section-shell" aria-label="Event posters">
           <div className="departments-heading">
             <p className="section-kicker">A Glimpse of the Evening</p>
             <h2>Event Posters</h2>
           </div>
           <PosterCarousel />
-        </section>
+        </section> */}
 
         <section className="coordinators-section section-shell" id="coordinators">
           <div className="departments-heading">
