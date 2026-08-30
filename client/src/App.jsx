@@ -772,7 +772,7 @@ function CrowdfundingPage() {
           <div className="leaderboard-heading">
             <div>
               <p className="section-kicker">All Donations</p>
-              <h2>Donation Leaderboard</h2>
+              <h2>Donors' details</h2>
             </div>
             <span>{funding.contributors.length} total donors</span>
           </div>
