@@ -458,8 +458,7 @@ function HomePage() {
             <p className="eyebrow">Wellness Club Presents</p>
             <h1>Janmashtami Youth Festival 2026</h1>
             <p className="hero-copy">
-              An evening where Devotion meets performance: Dance, Drama, Music, Abhishek, Prasadam, and a vibrant
-              <strong>Bhajan Blubbing</strong> finale for the IIIT Allahabad community.
+              An evening where Devotion meets performance: Dance, Drama, Music, Abhishek, Prasadam, and a vibrant <strong>Bhajan Blubbing</strong> finale for the IIIT Allahabad community.
             </p>
             <div className="hero-actions">
               <a className="primary-link" href="#events">Explore Events</a>
