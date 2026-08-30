@@ -161,8 +161,8 @@ const departments = [
     title: "Deity Worship",
     description: "Conduct the abhishek ceremony and every ritual honouring the deities at the heart of the celebration.",
     coordinators: [
-      { name: "Alok", phone: null },
-      { name: "Harismaran", phone: null }
+      { name: "Alok", phone: "8130656746" },
+      { name: "Harismaran", phone: "7386929395" }
     ]
   },
   {
@@ -187,7 +187,9 @@ const departments = [
     key: "dance",
     title: "Dance",
     description: "Choreograph and coordinate the dance performances that bring Krishna's leelas to the stage.",
-    coordinators: [{ name: "Harismaran", phone: null }]
+    coordinators: [{ name: "Harismaran", phone: "7386929395" },
+                   { name: "Roshan Shinde", phone: "9324845100" }
+    ]
   },
   {
     key: "music",
