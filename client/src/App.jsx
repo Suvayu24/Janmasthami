@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AdminLoginPage } from "./AdminAuthPages.jsx";
 import { useAdminAuth } from "./auth.js";
 import { ButterPotMotif, PeacockFeatherMotif, FluteMotif } from "./motifs.jsx";
@@ -92,12 +92,14 @@ function useCountdown(targetTime) {
     return () => window.clearInterval(timer);
   }, [targetTime]);
 
-  const totalMinutes = Math.floor(timeLeft / 60000);
+  const totalSeconds = Math.floor(timeLeft / 1000);
+  const totalMinutes = Math.floor(totalSeconds / 60);
 
   return {
     days: Math.floor(totalMinutes / (60 * 24)),
     hours: Math.floor((totalMinutes % (60 * 24)) / 60),
     minutes: totalMinutes % 60,
+    seconds: totalSeconds % 60,
     isOver: timeLeft <= 0
   };
 }
@@ -307,7 +309,7 @@ function Header({ funding = false }) {
 }
 
 function EventCountdown() {
-  const { days, hours, minutes, isOver } = useCountdown(eventCountdownTarget);
+  const { days, hours, minutes, seconds, isOver } = useCountdown(eventCountdownTarget);
 
   if (isOver) {
     return (
@@ -319,6 +321,12 @@ function EventCountdown() {
 
   return (
     <div className="countdown-strip" aria-label="Countdown to Janmashtami Utsav">
+      <img
+        src="/assets/countdown-overlay.png"
+        alt=""
+        className="countdown-overlay-img"
+        aria-hidden="true"
+      />
       <p className="countdown-label">Janmashtami Utsav begins in</p>
       <div className="countdown-figures">
         <div className="countdown-unit">
@@ -334,6 +342,79 @@ function EventCountdown() {
         <div className="countdown-unit">
           <strong>{String(minutes).padStart(2, "0")}</strong>
           <span>Minutes</span>
+        </div>
+        <span className="countdown-divider">:</span>
+        <div className="countdown-unit">
+          <strong>{String(seconds).padStart(2, "0")}</strong>
+          <span>Seconds</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BhajanFeaturedCard() {
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("is-visible"); observer.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="bhajan-card" ref={cardRef} aria-label="Featured event: Bhajan Clubbing">
+      {/* Image column */}
+      <div className="bhajan-card-image-wrap">
+        <img
+          src="/assets/narottam-das.jpg"
+          alt="Narottam Das — spiritual artist and performer"
+          className="bhajan-card-img"
+        />
+        <span className="bhajan-card-badge">★ Main Attraction</span>
+      </div>
+
+      {/* Text column */}
+      <div className="bhajan-card-body">
+        <p className="bhajan-card-kicker">Bhajan Clubbing</p>
+        <h3 className="bhajan-card-title">Where Bhajans<br />Meet the Beat</h3>
+        <p className="bhajan-card-desc">
+          Narottam Das is a spiritual artist devoted to using sound as a path of awakening.
+          An alumnus of IIT BHU, he chose music not merely as a career, but as a calling,
+          with formal training rooted in the rich musical traditions of Banaras Hindu University
+          and Prayag Sangeet Samiti.
+        </p>
+        <p className="bhajan-card-desc">
+          We are delighted to welcome Narottam Das to our college Janmashtami celebration,
+          where he will be performing <strong style={{color:'#f4d88a'}}>Bhajan Clubbing</strong>
+           — an energetic and soulful celebration of devotion through music.
+        </p>
+
+        <div className="bhajan-card-performer">
+          <div className="bhajan-card-performer-rule" />
+          <div className="bhajan-card-performer-text">
+            <span className="bhajan-card-performer-label">Performed by</span>
+            <strong className="bhajan-card-performer-name">Narottam Das &amp; Team</strong>
+          </div>
+          <a
+            className="bhajan-card-link"
+            href="https://www.narottamdas.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Visit Narottam Das official website"
+          >
+            Visit narottamdas.com
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>
@@ -488,8 +569,10 @@ function HomePage() {
 
           <div className="section-shell">
             <EventCountdown />
+            <BhajanFeaturedCard />
           </div>
         </section>
+
 
         <section className="chakra-scroll" id="events" aria-label="Scroll through festival events">
           <div className="chakra-sticky">
