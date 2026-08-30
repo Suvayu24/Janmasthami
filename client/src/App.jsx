@@ -461,7 +461,7 @@ function HomePage() {
             </p>
             <div className="hero-actions">
               <a className="primary-link" href="#events">Explore Events</a>
-              <a className="secondary-link" href="/crowdfunding">Support the Festival</a>
+              <a className="secondary-link" href="/crowdfunding">Donate</a>
             </div>
           </div>
 
@@ -752,15 +752,15 @@ function CrowdfundingPage() {
             <strong>{formatCurrency(funding.totalFunds)}</strong>
             {isAdmin && (
               <button className="primary-link button-link" type="button" onClick={() => setModalOpen(true)}>
-                Add Contributor
+                Add Donor
               </button>
             )}
             {!isAdmin && (
               <div className="public-contribution">
                 <a className="primary-link button-link" href={publicContributionFormUrl} target="_blank" rel="noreferrer">
-                  I want to contribute myself
+                  I want to donate
                 </a>
-                <p>Thank you for your contributions🙏 Once you have filled up the form, we will contact you via Email!</p>
+                <p>Thank you for your donations🙏 Once you have filled up the form, we will contact you via Email!</p>
               </div>
             )}
           </div>
@@ -769,14 +769,14 @@ function CrowdfundingPage() {
         <section className="leaderboard-section section-shell" aria-label="Crowd funding leaderboard">
           <div className="leaderboard-heading">
             <div>
-              <p className="section-kicker">All Contributions</p>
-              <h2>Contributor Leaderboard</h2>
+              <p className="section-kicker">All Donations</p>
+              <h2>Donation Leaderboard</h2>
             </div>
-            <span>{funding.contributors.length} total contributors</span>
+            <span>{funding.contributors.length} total donors</span>
           </div>
 
           {error && <p className="status-message error-message">{error}</p>}
-          {loading && <p className="status-message">Loading contributors...</p>}
+          {loading && <p className="status-message">Loading donors...</p>}
 
           {!loading && (
             <div className="leaderboard-table-wrap">
@@ -876,8 +876,8 @@ function CrowdfundingPage() {
           <section className="contributor-modal" role="dialog" aria-modal="true" aria-labelledby="contributor-title" onMouseDown={(event) => event.stopPropagation()}>
             <div className="modal-heading">
               <div>
-                <p className="section-kicker">New Contributor</p>
-                <h2 id="contributor-title">Add Funding Details</h2>
+                <p className="section-kicker">New Donor</p>
+                <h2 id="contributor-title">Add Donation Details</h2>
               </div>
               <button className="modal-close" type="button" onClick={() => setModalOpen(false)} aria-label="Close form">
                 X
